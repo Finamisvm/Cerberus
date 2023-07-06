@@ -4,6 +4,14 @@ import seaborn as sns;
 import seaborn.objects as so;
 
 from flask import Flask, render_template, request
+import sqlite3
+
+conn = sqlite3.connect('UserData_db.sqlite')
+cur = conn.cursor()
+cur.execute('CREATE TABLE userData (accName VARCHAR, accType VARCHAR)')
+conn.commit()
+
+conn.close()
 
 app = Flask(__name__)
 
