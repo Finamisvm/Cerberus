@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<title>Cerberus</title>
+
+
+<form action="/api/account" method="post">
+    <label for="accName">Account of which service?</label><br>
+    <input type="text" id="an" name="accName" value="(Reddit, Gmx, etc.)"><br><br>
+
+    <label for="accType">What type of Account?</label><br>
+    <input type="text" id="at" name= "accType" value="(Email, Social Media, etc.)" placeholder=""><br><br>
+
+    <label for="otherAccs">Other Accs connected?</label><br>
+    <input type="text" id="oa" name = "otherAccs" value="GMX, Hotmail, Facebook, ..."><br><br>
+
+    <label for="loginMethod">What's the main way of logging in?</label><br>
+    <input type="text" id="lm" name = "loginMethod" value="(Password, Pin, SSO)"><br><br>
+
+    <label for="backupMethod">What's the backup method?</label><br>
+    <input type="text" id="bm" name = "backupMethod" value="(Email, SMS, Question, ...)"><br><br><br>
+
+    <input type="submit" value="Send Data">
+</form> 
+
+<br><br>
+DATA RECEIVED:
+<br>
+{{accName}}
+<br>
+{{accType}}
+<br>
+{{otherAccs}}
+<br>
+{{loginMethod}}
+<br>
+{{backupMethod}}
