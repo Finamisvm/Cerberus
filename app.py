@@ -7,10 +7,9 @@ from flask import Flask, render_template, request
 import sqlite3
 
 conn = sqlite3.connect('UserData_db.sqlite')
-cur = conn.cursor()
-cur.execute('CREATE TABLE userData (accName VARCHAR, accType VARCHAR)')
+c = conn.cursor()
+c.execute('CREATE TABLE IF NOT EXISTS userData (accName VARCHAR, accType VARCHAR)')
 conn.commit()
-
 conn.close()
 
 app = Flask(__name__)
@@ -28,6 +27,14 @@ def account():
     otherAccs = request.form.get('otherAccs')
     loginMethod = request.form.get('loginMethod')
     backupMethod = request.form.get('backupMethod')
+
+    conn = sqlite3.connect('UserData_db.sqlite')
+    c = conn.cursor()
+    insintab = "INSERT INTO userData (accName, accType) values (?, ?)"
+    c.execute(insintab, (accName, accType))
+    conn.commit()
+    conn.close()
+
     return render_template("index.html", accName=accName, accType=accType, otherAccs=otherAccs, loginMethod=loginMethod, backupMethod=backupMethod)
 
 @app.route("/result")
