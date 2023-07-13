@@ -8,7 +8,7 @@ import sqlite3
 
 conn = sqlite3.connect('UserData_db.sqlite')
 c = conn.cursor()
-c.execute('CREATE TABLE IF NOT EXISTS userData (accName VARCHAR, accType VARCHAR)')
+c.execute('CREATE TABLE IF NOT EXISTS accounts_table (accName VARCHAR, accType VARCHAR, otherAccs VARCHAR, loginMethod VARCHAR, backupMethod Varchar)')
 conn.commit()
 conn.close()
 
@@ -30,8 +30,8 @@ def account():
 
     conn = sqlite3.connect('UserData_db.sqlite')
     c = conn.cursor()
-    insintab = "INSERT INTO userData (accName, accType) values (?, ?)"
-    c.execute(insintab, (accName, accType))
+    insintab = "INSERT INTO accounts_table (accName, accType, otherAccs, loginMethod, backupMethod) values (?, ?, ?, ?, ?)"
+    c.execute(insintab, (accName, accType, otherAccs, loginMethod, backupMethod))
     conn.commit()
     conn.close()
 
@@ -40,17 +40,3 @@ def account():
 @app.route("/result")
 def result():
     return "result of accounts"
-
-#seems to kill laptop: print(request.values.get(AccName))
-
-def writeDatainTable(userinput):
-    # for i = 1, nofuckingideahowmuch:
-    #     datatable[i] = userinput
-    
-    # return datatable
-    pass
-
-def printDatatable(datatable):
-    pass
-
-
