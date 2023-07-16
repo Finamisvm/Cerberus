@@ -2,6 +2,9 @@ import numpy as np;
 import pandas as pd;
 import seaborn as sns;
 import seaborn.objects as so;
+from model.accountType import AccountType
+from model.loginMethod import LoginMethod
+from model.twoFactorMethod import TwoFactorMethod
 
 from flask import Flask, render_template, request
 import sqlite3
@@ -19,6 +22,21 @@ datatable = []
 @app.route("/", methods=["GET"])
 def hello_world():
     return render_template("index.html")
+
+
+@app.route("/account/edit", methods=["GET"])
+def account_edit():
+    return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod)
+
+@app.route("/account/2fa", methods=["GET"])
+def account_twoFAFrom():    
+    is2FAActive = request.values.get('twoFAActive')
+    if is2FAActive is None:
+        return ""
+    
+    return render_template("account/towFAAutentication.html", twoFAMethods=TwoFactorMethod)
+    
+
 
 @app.route("/api/account", methods=["GET", "POST"])
 def account():

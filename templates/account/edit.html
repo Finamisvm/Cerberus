@@ -1,0 +1,37 @@
+<form action="/account/update" method="post">
+    <label for="accountName">Account Name:</label>
+    <input type="text" id="accountName" name="accountName" />
+    <br /><br />
+    
+    <label for="accountType">Account Type:</label>
+    <select id="accountType" name="accountType">
+        {% for accType in accountTypes %}
+            <option value="{{ accType.value }}">{{ accType.name }}</option>
+        {% endfor %}
+    </select>
+    <br /><br />
+    
+    <label for="loginMethod">Login Method:</label>
+    <select id="loginMethod" name="loginMethod">
+        {% for loginMethod in loginMethods %}
+            <option value="{{ loginMethod.value }}">{{ loginMethod.name }}</option>
+        {% endfor %}
+    </select>
+    <br /><br />
+
+    
+    <label for="twoFAActive">Two Factor Authentication enabled?</label>
+    <input type="checkbox"  id="twoFAActive" name="twoFAActive" value="true"
+        hx-get="/account/2fa" 
+        hx-target="#twoFactorContainer"
+        hx-swap="innerHTML"/>
+    <br /><br />
+
+    <div id="twoFactorContainer">
+    </div>
+
+    <!-- recovery method -->
+
+    <input type="submit" value="Send Data">
+</form>
+<script src="https://unpkg.com/htmx.org@1.9.3"></script>
