@@ -30,7 +30,23 @@
     <div id="twoFactorContainer">
     </div>
 
-    <!-- recovery method -->
+    <label for="recoveryMethod">Recovery Method:</label>
+    <select id="recoveryMethod" name="recoveryMethod">
+        {% for recoveryMethod in recoveryMethods %}
+            <option value="{{ recoveryMethod.value }}">{{ recoveryMethod.name }}</option>
+        {% endfor %}
+    </select>
+    <br /><br />
+
+    <label for="otherAccs">Do you occasionally use this account to log into other accounts?</label>
+    <input type="checkbox"  id="otherAccs" name="otherAccs" value="false"
+        hx-get="/account/oaccs" 
+        hx-target="#otherAccsContainer"
+        hx-swap="innerHTML"/>
+    <br /><br />
+
+    <div id="otherAccsContainer">
+    </div>
 
     <input type="submit" value="Send Data">
 </form>
