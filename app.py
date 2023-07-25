@@ -81,4 +81,4 @@ def calc():
     results = model.calc(accounts)
     for r in results:
         print("acc: " + r.account.name + " | value: " + str(r.value))
-    return ""
+    return render_template("modelTable.html", results=results)
