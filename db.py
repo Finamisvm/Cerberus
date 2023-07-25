@@ -4,6 +4,7 @@ from model.account import Account
 from model.accountType import AccountType
 from model.loginMethod import LoginMethod
 from model.twoFactorMethod import TwoFactorMethod
+from uuid import UUID
 
 def init_db():
     connection = sqlite3.connect("UserData.db")
@@ -21,7 +22,7 @@ def init_db():
     connection.commit()
     connection.close()
 
-def get_accounts():
+def get_accounts() -> list[Account]:
     connection = sqlite3.connect("UserData.db")
     cur = connection.cursor()
     sql = "SELECT * FROM accounts_table"
@@ -31,9 +32,9 @@ def get_accounts():
     accounts = []
     for row in rows:
         accounts.append(Account(
-            userId=row[0],
+            userId=UUID(row[0]),
             name=row[1],
-            accountType=AccountType[row[2]],
+            type=AccountType[row[2]],
             loginMethod=LoginMethod[row[3]],
             twoFAMethod=TwoFactorMethod[row[4]],
             fallbackMethod=row[5],

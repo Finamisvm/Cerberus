@@ -1,3 +1,4 @@
+from mathstuffs.ssodel import SSodel
 from model.account import Account;
 from model.accountType import AccountType
 from model.loginMethod import LoginMethod
@@ -11,6 +12,8 @@ import db
 app = Flask(__name__)
 
 db.init_db()
+
+# to do: make accounts linkable, same user-id for multiple inputs!
 
 @app.route("/account/update", methods = ["POST"])
 def create_account():
@@ -33,7 +36,6 @@ def create_account():
 def hello_world():
     return render_template("index.html")
 
-
 @app.route("/account/edit", methods=["GET"])
 def account_edit():
     return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod)
@@ -51,8 +53,7 @@ def account_otherAccsFrom():
     otherAccs = request.values.get('otherAccs')
     if otherAccs is None:
         return ""
-    
-
+   
 @app.route("/api/account", methods=["GET", "POST"])
 def account():
     accType = request.form.get('accType')
@@ -72,3 +73,12 @@ def account():
 @app.route("/result")
 def result():
     return "result of accounts"
+
+@app.route("/model/calc")
+def calc():
+    accounts = db.get_accounts()
+    model = SSodel()
+    results = model.calc(accounts)
+    for r in results:
+        print("acc: " + r.account.name + " | value: " + str(r.value))
+    return ""
