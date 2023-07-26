@@ -5,9 +5,12 @@ from model.loginMethod import LoginMethod
 from model.twoFactorMethod import TwoFactorMethod
 from model.recoveryMethod import RecoveryMethod
 
+import matplotlib.pyplot as plt
+
 from flask import Flask, render_template, request
 import sqlite3
 import db
+import networkx as nx
 
 app = Flask(__name__)
 
@@ -79,6 +82,27 @@ def calc():
     accounts = db.get_accounts()
     model = SSodel()
     results = model.calc(accounts)
+
+    G = nx.Graph()
+    nodes = []
+    for result in results:
+        nodes.append((result.account.name, {"color": "red"}))
+    G.add_nodes_from(nodes)
+
+    nx.draw(G, with_labels = True)
+    plt.savefig("static/graph.png")
+
     for r in results:
         print("acc: " + r.account.name + " | value: " + str(r.value))
     return render_template("modelTable.html", results=results)
+
+# Adjacency: list = {'Google': ['B', 'G', 'D'],
+#                   'B': ['Google', 'G', 'C', 'E'],
+#                   'C': ['B', 'E', 'F'],
+#                   'D': ['Google', 'F'],
+#                   'E': ['B', 'C', 'F'],
+#                   'F': ['G', 'D', 'C', 'E'],
+#                   'G': ['Google', 'B', 'F']}
+# G = nx.Graph(Adjacency)
+# nx.draw(G, with_labels = True)
+# plt.savefig("path.png")
