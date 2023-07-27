@@ -9,7 +9,7 @@
 </div>
 
 <br /><br />
-<button hx-get="/model/calc" hx-trigger="click" hx-target="#modelResults">Calc Stuff</button>
+<button hx-get="/{{userID}}/model/calc" hx-trigger="click" hx-target="#modelResults">Calc Stuff</button>
 
 <div id="modelResults"></div>
 
@@ -28,6 +28,6 @@ DATA RECEIVED:
 
 <br /><br />
 
-<img src="static/graph.png" />
+<img src="static/{{userID}}.png" />
 
 <script src="https://unpkg.com/htmx.org@1.9.3"></script>

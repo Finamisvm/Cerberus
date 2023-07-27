@@ -38,26 +38,18 @@ def create_account(userID: str):
     recoveryMethod = RecoveryMethod(int(request.values.get("recoveryMethod")))
     account = Account(
         userID=parsedID,
-        name=name, 
+        name=name,  
         type=type, 
         loginMethod=loginMethod, 
         twoFAMethod=twoFactorMethod, 
         fallbackMethod=recoveryMethod,
         )
     db.insert_account(account)
-    return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod, userID=userID)
+    return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod, twoFAMethods=TwoFactorMethod, userID=userID)
 
 @app.route("/<userID>/account/edit", methods=["GET"])
 def account_edit(userID: str):
-    return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod, userID=userID)
-
-@app.route("/account/2fa", methods=["GET"])
-def account_twoFAFrom():    
-    is2FAActive = request.values.get('twoFAActive')
-    if is2FAActive is None:
-        return ""
-    
-    return render_template("account/twoFAAuthentication.html", twoFAMethods=TwoFactorMethod)
+    return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod, twoFAMethods=TwoFactorMethod, userID=userID)
     
 @app.route("/account/otheraccs", methods=["GET"])
 def account_otherAccsFrom():    
@@ -85,9 +77,9 @@ def account():
 def result():
     return "result of accounts"
 
-@app.route("/model/calc")
-def calc():
-    accounts = db.get_accounts()
+@app.route("/<userID>/model/calc")
+def calc(userID: str):
+    accounts = db.get_accounts(userID)
     model = SSodel()
     results = model.calc(accounts)
 
@@ -98,7 +90,7 @@ def calc():
     G.add_nodes_from(nodes)
 
     nx.draw(G, with_labels = True)
-    plt.savefig("static/graph.png")
+    plt.savefig("static/" + userID + ".png")
 
     for r in results:
         print("acc: " + r.account.name + " | value: " + str(r.value))

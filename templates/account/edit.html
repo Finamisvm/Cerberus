@@ -1,4 +1,4 @@
-<form action="/{{userID}}/account/update" method="post">
+<form action="/{{userID}}/account/update" method="post" hx-swap="outerHTML">
     <input hidden="true" name="userID" value="{{userID}}"/>
     <label for="accountName">Account Name:</label>
     <input type="text" id="accountName" name="accountName" />
@@ -21,15 +21,13 @@
     <br /><br />
 
     
-    <label for="twoFAActive">Two Factor Authentication enabled?</label>
-    <input type="checkbox"  id="twoFAActive" name="twoFAActive" value="true"
-        hx-get="/account/2fa" 
-        hx-target="#twoFactorContainer"
-        hx-swap="innerHTML"/>
+    <label for="twoFAMethod">2 FA Method:</label>
+    <select id="twoFAMethod" name="twoFAMethod">
+        {% for twoFAMethod in twoFAMethods %}
+        <option value="{{ twoFAMethod.value }}">{{ twoFAMethod.name }}</option>
+        {% endfor %}
+    </select>
     <br /><br />
-
-    <div id="twoFactorContainer">
-    </div>
 
     <label for="recoveryMethod">Recovery Method:</label>
     <select id="recoveryMethod" name="recoveryMethod">
@@ -51,4 +49,3 @@
 
     <input type="submit" value="Send Data">
 </form>
-<script src="https://unpkg.com/htmx.org@1.9.3"></script>

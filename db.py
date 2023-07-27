@@ -22,11 +22,11 @@ def init_db():
     connection.commit()
     connection.close()
 
-def get_accounts() -> list[Account]:
+def get_accounts(userID: str) -> list[Account]:
     connection = sqlite3.connect("UserData.db")
     cur = connection.cursor()
-    sql = "SELECT * FROM accounts_table"
-    cur.execute(sql)
+    sql = "SELECT * FROM accounts_table WHERE userID=?;"
+    cur.execute(sql, (userID,))
     rows = cur.fetchall()
 
     accounts = []
