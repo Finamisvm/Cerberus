@@ -5,7 +5,7 @@ from .loginMethod import LoginMethod
 from uuid import uuid4
 
 class Account:
-    userId: uuid4 = uuid4()
+    userID: uuid4 = uuid4()
     name: str = ""
     type: AccountType or None = None # email, social media, ...
     loginMethod: LoginMethod = LoginMethod.PASSWORD
@@ -15,7 +15,7 @@ class Account:
     connectedAccounts = [] # list of Accounts
 
     def __init__(self, 
-                 userId = uuid4(), 
+                 userID = uuid4(), 
                  name = "", 
                  type = None, 
                  loginMethod = LoginMethod.PASSWORD, 
@@ -23,7 +23,7 @@ class Account:
                  twoFAMethod = None,
                  fallbackMethod = None,
                  connectedAccounts = []):
-        self.userId = userId
+        self.userID = userID
         self.name = name
         self.type = type
         self.loginMethod = loginMethod

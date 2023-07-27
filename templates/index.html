@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <title>Cerberus</title>
 
-<div hx-get="/account/edit" hx-trigger="load" hx-swap="outerHTML">
+<div>
+    <p><strong>User ID: {{userID}}</strong>   Save the user ID in case you want to access your data later again</p>
+</div>
+
+<div hx-get="{{userID}}/account/edit" hx-trigger="load" hx-swap="outerHTML">
 </div>
 
 <br /><br />

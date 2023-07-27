@@ -11,7 +11,7 @@ def init_db():
     c = connection.cursor()
     c.execute("""
               CREATE TABLE IF NOT EXISTS accounts_table (
-                userId VARCHAR(100), 
+                userID VARCHAR(100), 
                 accName VARCAHR, 
                 accType VARCHAR, 
                 loginMethod VARCHAR, 
@@ -32,7 +32,7 @@ def get_accounts() -> list[Account]:
     accounts = []
     for row in rows:
         accounts.append(Account(
-            userId=UUID(row[0]),
+            userID=UUID(row[0]),
             name=row[1],
             type=AccountType[row[2]],
             loginMethod=LoginMethod[row[3]],
@@ -51,11 +51,11 @@ def insert_account(account: Account):
     cursor = connection.cursor()
     sql = """
         INSERT INTO accounts_table 
-        (userId, accName, accType, loginMethod, twoFactorMethod, recoveryMethod) 
+        (userID, accName, accType, loginMethod, twoFactorMethod, recoveryMethod) 
         values (?, ?, ?, ?, ?, ?)
     """
     cursor.execute(sql, (
-        str(account.userId),
+        str(account.userID),
         account.name, 
         account.type.name, 
         account.loginMethod.name, 

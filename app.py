@@ -7,7 +7,8 @@ from model.recoveryMethod import RecoveryMethod
 
 import matplotlib.pyplot as plt
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
+from uuid import uuid4, UUID
 import sqlite3
 import db
 import networkx as nx
@@ -17,15 +18,26 @@ app = Flask(__name__)
 db.init_db()
 
 # to do: make accounts linkable, same user-id for multiple inputs!
+@app.route("/", methods=["GET"])
+def index():
+    userID = uuid4()
+    return redirect("/" + str(userID))
 
-@app.route("/account/update", methods = ["POST"])
-def create_account():
+@app.route("/<userID>")
+def userSite(userID: str):
+    parsed = UUID(userID)
+    return render_template("index.html", userID=userID)
+
+@app.route("/<userID>/account/update", methods = ["POST"])
+def create_account(userID: str):
+    parsedID = UUID(userID)
     name = request.values.get("accountName")
     type = AccountType(int(request.values.get("accountType")))
     loginMethod = LoginMethod(int(request.values.get("loginMethod")))
     twoFactorMethod = TwoFactorMethod(int(request.values.get("twoFAMethod")))
     recoveryMethod = RecoveryMethod(int(request.values.get("recoveryMethod")))
     account = Account(
+        userID=parsedID,
         name=name, 
         type=type, 
         loginMethod=loginMethod, 
@@ -33,15 +45,11 @@ def create_account():
         fallbackMethod=recoveryMethod,
         )
     db.insert_account(account)
-    return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod)
+    return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod, userID=userID)
 
-@app.route("/", methods=["GET"])
-def hello_world():
-    return render_template("index.html")
-
-@app.route("/account/edit", methods=["GET"])
-def account_edit():
-    return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod)
+@app.route("/<userID>/account/edit", methods=["GET"])
+def account_edit(userID: str):
+    return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod, userID=userID)
 
 @app.route("/account/2fa", methods=["GET"])
 def account_twoFAFrom():    

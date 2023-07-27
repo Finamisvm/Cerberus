@@ -1,4 +1,5 @@
-<form action="/account/update" method="post">
+<form action="/{{userID}}/account/update" method="post">
+    <input hidden="true" name="userID" value="{{userID}}"/>
     <label for="accountName">Account Name:</label>
     <input type="text" id="accountName" name="accountName" />
     <br /><br />
