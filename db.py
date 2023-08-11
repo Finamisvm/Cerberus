@@ -1,9 +1,9 @@
 import sqlite3
 
-from model.account import Account
-from model.accountType import AccountType
-from model.loginMethod import LoginMethod
-from model.twoFactorMethod import TwoFactorMethod
+from entity.account import Account
+from entity.accountType import AccountType
+from entity.loginMethod import LoginMethod
+from entity.twoFactorMethod import TwoFactorMethod
 from uuid import UUID
 
 def init_db():

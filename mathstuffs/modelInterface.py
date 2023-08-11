@@ -1,4 +1,4 @@
-from model.account import Account
+from entity.account import Account
 
 class ModelResult:
     account: Account = None

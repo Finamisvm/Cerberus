@@ -1,6 +1,6 @@
 from mathstuffs.modelInterface import ModelInterface, ModelResult
-from model.account import Account
-from model.loginMethod import LoginMethod
+from entity.account import Account
+from entity.loginMethod import LoginMethod
 
 
 class SSodel(ModelInterface):
@@ -13,7 +13,7 @@ class SSodel(ModelInterface):
                 )
             )
         return result
-    
+
     def calc_login_method(self, login_method: LoginMethod) -> float:
         if login_method == LoginMethod.PASSWORD:
             return 1.0

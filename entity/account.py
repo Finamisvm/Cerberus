@@ -1,7 +1,7 @@
-from model.accountType import AccountType
-from model.recoveryMethod import RecoveryMethod
-from model.twoFactorMethod import TwoFactorMethod
-from .loginMethod import LoginMethod
+from entity.accountType import AccountType
+from entity.recoveryMethod import RecoveryMethod
+from entity.twoFactorMethod import TwoFactorMethod
+from entity.loginMethod import LoginMethod
 from uuid import uuid4
 
 class Account:

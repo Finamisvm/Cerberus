@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 from threading import Thread
 from mathstuffs.modelInterface import ModelResult
 from mathstuffs.ssodel import SSodel
-from model.account import Account;
-from model.accountType import AccountType
-from model.loginMethod import LoginMethod
-from model.twoFactorMethod import TwoFactorMethod
-from model.recoveryMethod import RecoveryMethod
+from entity.account import Account;
+from entity.accountType import AccountType
+from entity.loginMethod import LoginMethod
+from entity.twoFactorMethod import TwoFactorMethod
+from entity.recoveryMethod import RecoveryMethod
 
 from flask import Flask, render_template, request, redirect
 from uuid import uuid4, UUID
