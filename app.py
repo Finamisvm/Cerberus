@@ -65,7 +65,7 @@ def select_account(userID: str):
     fieldName =  request.values.get("fieldName")
     if isEmailConnected == None:
         return ""
-    return render_template("account/selection.html", accounts=accounts)
+    return render_template("account/selection.html", accounts=accounts, fieldName=fieldName)
 
 @app.route("/<userID>/account/edit", methods=["GET"])
 def account_edit(userID: str):

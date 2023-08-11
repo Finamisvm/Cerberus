@@ -1,4 +1,4 @@
-<select name="emailAccount">
+<select name="{{fieldName}}">
     {% for account in accounts %}
     <option value="{{ account.id }}">{{ account.name }}</option>
     {% endfor %}
