@@ -20,6 +20,14 @@
     </select>
     <br /><br />
 
+    <label for="emailConnected">Mail Account connected?</label>
+    <input type="checkbox" name="emailConnected" id="emailConnected" value="true"
+        hx-get="/{{userID}}/account/select?fieldName=connectedEmail"
+        hx-swap="innerHTML"
+        hx-target="#emailAccountSelection"/>
+
+    <div id="emailAccountSelection"></div>
+    <br /><br />
     
     <label for="twoFAMethod">2 FA Method:</label>
     <select id="twoFAMethod" name="twoFAMethod">
@@ -49,3 +57,4 @@
 
     <input type="submit" value="Send Data">
 </form>
+<script src="https://unpkg.com/htmx.org@1.9.3"></script>

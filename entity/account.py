@@ -5,6 +5,7 @@ from entity.loginMethod import LoginMethod
 from uuid import uuid4
 
 class Account:
+    id: int = 0,
     userID: uuid4 = uuid4()
     name: str = ""
     type: AccountType or None = None # email, social media, ...
@@ -12,9 +13,12 @@ class Account:
     twoFAEnabled: bool = False
     twoFAMethod: TwoFactorMethod = None
     fallbackMethod: RecoveryMethod = None
-    connectedAccounts = [] # list of Accounts
+    connectedEmail: int = 0
+    connectedSSOAccounts = [] # list of Accounts
+    connectedFallbackAccounts = [] # list of Accounts
 
     def __init__(self, 
+                 id = 0,
                  userID = uuid4(), 
                  name = "", 
                  type = None, 
@@ -22,7 +26,10 @@ class Account:
                  twoFAEnabled = False,
                  twoFAMethod = None,
                  fallbackMethod = None,
-                 connectedAccounts = []):
+                 connectedEmail = 0,
+                 connectedSSOAccounts = [],
+                 connectedFallbackAccounts = []):
+        self.id = id
         self.userID = userID
         self.name = name
         self.type = type
@@ -30,4 +37,6 @@ class Account:
         self.twoFAEnabled = twoFAEnabled
         self.twoFAMethod = twoFAMethod
         self.fallbackMethod = fallbackMethod
-        self.connectedAccounts = connectedAccounts
+        self.connectedEmail = connectedEmail
+        self.connectedSSOAccounts = connectedSSOAccounts
+        self.connectedFallbackAccounts = connectedFallbackAccounts

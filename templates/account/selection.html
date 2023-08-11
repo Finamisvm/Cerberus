@@ -1,0 +1,5 @@
+<select name="emailAccount">
+    {% for account in accounts %}
+    <option value="{{ account.id }}">{{ account.name }}</option>
+    {% endfor %}
+</select>

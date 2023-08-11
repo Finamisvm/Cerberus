@@ -41,6 +41,10 @@ def create_account(userID: str):
     loginMethod = LoginMethod(int(request.values.get("loginMethod")))
     twoFactorMethod = TwoFactorMethod(int(request.values.get("twoFAMethod")))
     recoveryMethod = RecoveryMethod(int(request.values.get("recoveryMethod")))
+    connectedEmail = 0
+    isEmailConnected = request.values.get("emailConnected")
+    if isEmailConnected != None:
+        connectedEmail = int(request.values.get("connectedEmail"))
     account = Account(
         userID=parsedID,
         name=name,  
@@ -48,9 +52,20 @@ def create_account(userID: str):
         loginMethod=loginMethod, 
         twoFAMethod=twoFactorMethod, 
         fallbackMethod=recoveryMethod,
+        connectedEmail=connectedEmail
         )
     db.insert_account(account)
     return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod, twoFAMethods=TwoFactorMethod, userID=userID)
+
+@app.route("/<userID>/account/select")
+def select_account(userID: str):
+    accounts = db.get_accounts(userID)
+
+    isEmailConnected =  request.values.get("emailConnected")
+    fieldName =  request.values.get("fieldName")
+    if isEmailConnected == None:
+        return ""
+    return render_template("account/selection.html", accounts=accounts)
 
 @app.route("/<userID>/account/edit", methods=["GET"])
 def account_edit(userID: str):
