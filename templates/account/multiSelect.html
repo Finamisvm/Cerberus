@@ -1,0 +1,7 @@
+{% for account in accounts %}
+<input type="checkbox" 
+    value="{{ account.id }}" 
+    id="{{prefix}}-{{ account.id }}" 
+    name="{{prefix}}-{{ account.id }}"/>
+<label for="{{prefix}}-{{ account.id }}">{{ account.name }}</label>
+{% endfor %}

@@ -11,23 +11,28 @@
         {% endfor %}
     </select>
     <br /><br />
-    
-    <label for="loginMethod">Login Method:</label>
-    <select id="loginMethod" name="loginMethod">
-        {% for loginMethod in loginMethods %}
-            <option value="{{ loginMethod.value }}">{{ loginMethod.name }}</option>
-        {% endfor %}
-    </select>
-    <br /><br />
 
     <label for="emailConnected">Mail Account connected?</label>
     <input type="checkbox" name="emailConnected" id="emailConnected" value="true"
-        hx-get="/{{userID}}/account/select?fieldName=connectedEmail"
+        hx-get="/{{userID}}/account/select/email?fieldName=connectedEmail"
         hx-swap="innerHTML"
         hx-target="#emailAccountSelection"/>
 
     <div id="emailAccountSelection"></div>
     <br /><br />
+    
+    <label for="loginMethod">Login Method:</label>
+    <select id="loginMethod" name="loginMethod"
+        hx-get="/{{userID}}/account/select/login"
+        hx-swap="innerHTML"
+        hx-target="#ssoAccountSelection">
+        {% for loginMethod in loginMethods %}
+            <option value="{{ loginMethod.value }}">{{ loginMethod.name }}</option>
+        {% endfor %}
+    </select>
+    <div id="ssoAccountSelection"></div>
+    <br /><br />
+
     
     <label for="twoFAMethod">2 FA Method:</label>
     <select id="twoFAMethod" name="twoFAMethod">
@@ -38,11 +43,15 @@
     <br /><br />
 
     <label for="recoveryMethod">Recovery Method:</label>
-    <select id="recoveryMethod" name="recoveryMethod">
+    <select id="recoveryMethod" name="recoveryMethod"
+        hx-get="/{{userID}}/account/select/recovery"
+        hx-swap="innerHTML"
+        hx-target="#recoveryAccountSelection">
         {% for recoveryMethod in recoveryMethods %}
             <option value="{{ recoveryMethod.value }}">{{ recoveryMethod.name }}</option>
         {% endfor %}
     </select>
+    <div id="recoveryAccountSelection"></div>
     <br /><br />
 
     <label for="otherAccs">Do you occasionally use this account to log into other accounts?</label>
