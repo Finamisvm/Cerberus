@@ -2,10 +2,9 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from threading import Thread
 from mathstuffs.modelInterface import ModelResult
 from mathstuffs.ssodel import SSodel
-from entity.account import Account;
+from entity.account import Account
 from entity.accountType import AccountType
 from entity.loginMethod import LoginMethod
 from entity.twoFactorMethod import TwoFactorMethod
@@ -13,7 +12,6 @@ from entity.recoveryMethod import RecoveryMethod
 
 from flask import Flask, render_template, request, redirect
 from uuid import uuid4, UUID
-import sqlite3
 import db
 import networkx as nx
 
@@ -88,7 +86,6 @@ def select_sso_account(userID: str):
         return render_template("account/multiSelect.html", accounts=accounts, prefix=PREFIX_LOGIN_SELECTION)
     return ""
 
-
 @app.route("/<userID>/account/select/recovery")
 def select_recovery_account(userID: str):
     accounts = db.get_accounts(userID)
@@ -108,22 +105,6 @@ def account_otherAccsFrom():
     if otherAccs is None:
         return ""
    
-@app.route("/api/account", methods=["GET", "POST"])
-def account():
-    accType = request.form.get('accType')
-    otherAccs = request.form.get('otherAccs')
-    loginMethod = request.form.get('loginMethod')
-    backupMethod = request.form.get('recoveryMethod')
-
-    conn = sqlite3.connect('UserData_db.sqlite')
-    c = conn.cursor()
-    insintab = "INSERT INTO accounts_table (accType, otherAccs, loginMethod, recoveryMethod) values (?, ?, ?, ?)"
-    c.execute(insintab, (accType, otherAccs, loginMethod, backupMethod))
-    conn.commit()
-    conn.close()
-
-    return render_template("index.html", accType=accType, otherAccs=otherAccs, loginMethod=loginMethod, backupMethod=backupMethod)
-
 @app.route("/result")
 def result():
     return "result of accounts"
@@ -152,18 +133,4 @@ def calc(userID: str):
     plt.savefig("static/" + userID + ".png")
     plt.clf()
 
-        # thread = Thread(target=draw_task, args=(userID, results))
-        # thread.start()
-
     return render_template("modelTable.html", results=results)
-
-def draw_task(userID: str, results: list[ModelResult]):
-    G = nx.Graph()
-    nodes = []
-    for result in results:
-        nodes.append((result.account.name, {"color": "red"}))
-    G.add_nodes_from(nodes)
-
-    nx.draw(G, with_labels=True, )
-    plt.savefig("static/" + userID + ".png")
-    plt.clf()
