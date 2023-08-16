@@ -2,7 +2,6 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from mathstuffs.modelInterface import ModelResult
 from mathstuffs.ssodel import SSodel
 from entity.account import Account
 from entity.accountType import AccountType

@@ -43,11 +43,11 @@ def get_accounts(userID: str) -> list[Account]:
     sql = "SELECT * FROM accounts_table WHERE userID=?;"
     cur.execute(sql, (userID,))
     rows = cur.fetchall()
-
+    id = int(row[0])
     accounts = []
     for row in rows:
         accounts.append(Account(
-            id=int(row[0]),
+            id=id,
             userID=UUID(row[1]),
             name=row[2],
             type=AccountType[row[3]],
@@ -55,10 +55,35 @@ def get_accounts(userID: str) -> list[Account]:
             twoFAMethod=TwoFactorMethod[row[5]],
             fallbackMethod=row[6],
             connectedEmail=row[7],
+            connectedLoginAccounts=get_login_accounts(id),
+            connectedRecoveryAccounts=get_recovery_accounts(id),
         ))
 
     connection.close()
     return accounts
+
+def get_login_accounts(accountID: int):
+    connection = sqlite3.connect("UserData.db")
+    cur = connection.cursor()
+    result = []
+    sql = "SELECT login_account_id FROM login_connections WHERE account_id=?;"
+    cur.execute(sql, (accountID,))
+    rows = cur.fetchall()
+    for row in rows:
+        result.append(row[0])
+    return result
+
+
+def get_recovery_accounts(accountID: int):
+    connection = sqlite3.connect("UserData.db")
+    cur = connection.cursor()
+    result = []
+    sql = "SELECT recovery_account_id FROM recovery_connections WHERE account_id=?;"
+    cur.execute(sql, (accountID,))
+    rows = cur.fetchall()
+    for row in rows:
+        result.append(row[0])
+    return result
 
 def get_connections(userID: str) -> list[(int, int)]:
     connection = sqlite3.connect("UserData.db")

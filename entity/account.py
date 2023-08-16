@@ -14,8 +14,8 @@ class Account:
     twoFAMethod: TwoFactorMethod = None
     fallbackMethod: RecoveryMethod = None
     connectedEmail: int = 0
-    connectedSSOAccounts = [] # list of Accounts
-    connectedFallbackAccounts = [] # list of Accounts
+    connectedLoginAccounts = [] # list of Accounts
+    connectedRecoveryAccounts = [] # list of Accounts
 
     def __init__(self, 
                  id = 0,
@@ -27,8 +27,8 @@ class Account:
                  twoFAMethod = None,
                  fallbackMethod = None,
                  connectedEmail = 0,
-                 connectedSSOAccounts = [],
-                 connectedFallbackAccounts = []):
+                 connectedLoginAccounts = [],
+                 connectedRecoveryAccounts = []):
         self.id = id
         self.userID = userID
         self.name = name
@@ -38,5 +38,5 @@ class Account:
         self.twoFAMethod = twoFAMethod
         self.fallbackMethod = fallbackMethod
         self.connectedEmail = connectedEmail
-        self.connectedSSOAccounts = connectedSSOAccounts
-        self.connectedFallbackAccounts = connectedFallbackAccounts
+        self.connectedLoginAccounts = connectedLoginAccounts
+        self.connectedRecoveryAccounts = connectedRecoveryAccounts
