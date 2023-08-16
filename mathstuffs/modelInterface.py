@@ -2,11 +2,13 @@ from entity.account import Account
 
 class ModelResult:
     account: Account = None
-    value: float = 0.0
+    secScore: float = 0.0
+    hints: list[str] = []
 
-    def __init__(self, account, value):
+    def __init__(self, account, secScore):
         self.account = account
-        self.value = value
+        self.secScore = secScore
+        self.hints = []
 
 class ModelInterface:
     def calc(accounts: list[Account]) -> list[ModelResult]:

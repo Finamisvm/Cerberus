@@ -43,9 +43,9 @@ def get_accounts(userID: str) -> list[Account]:
     sql = "SELECT * FROM accounts_table WHERE userID=?;"
     cur.execute(sql, (userID,))
     rows = cur.fetchall()
-    id = int(row[0])
     accounts = []
     for row in rows:
+        id = int(row[0])
         accounts.append(Account(
             id=id,
             userID=UUID(row[1]),

@@ -3,13 +3,21 @@
         <tr>
             <th>Account</th>
             <th>Value</th>
+            <th>Hints/Warnings</th>
         </tr>
     </thead>
     <tbody>
         {% for result in results %}
         <tr>
             <td>{{ result.account.name }}</td>
-            <td>{{ result.value }}</td>
+            <td>{{ result.secScore }}</td>
+            <td>
+                <ul>
+                    {% for hint in result.hints %}
+                    <li>{{ hint }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
