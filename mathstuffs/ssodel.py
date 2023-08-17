@@ -20,12 +20,9 @@ class SSodel(ModelInterface):
         for loginAccountId in connectedAccounts:
                 loginAccount = self.get_account(accounts, loginAccountId)
                 secScoreLoginAcc = self.calc_sec_score_for_account(loginAccount)
-
-                if secScoreLoginAcc < result.secScore:
-                    result.hints.append(
-                        "Warning: The security score of your connected account '{name}' is lower than the security score of this account."
-                        .format(name=loginAccount.name)
-                    )
+                result.secScoreConnectedAccounts.append([loginAccountId, secScoreLoginAcc])
+                if secScoreLoginAcc < result.actualSecScore:
+                    result.actualSecScore = secScoreLoginAcc
                 
 
     def get_account(self, accounts: list[Account], id: int) -> Account:

@@ -1,4 +1,6 @@
 import matplotlib
+
+from mathstuffs.recommendation import SampleRecommendationEngine
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
@@ -65,7 +67,7 @@ def create_account(userID: str):
         if key.startswith(PREFIX_RECOVERY_SELECTION):
             db.insert_recovery_connection(parsedID, accountId, request.form.get(key))
 
-    return render_template("account/edit.html", accountTypes=AccountType, loginMethods=LoginMethod, recoveryMethods=RecoveryMethod, twoFAMethods=TwoFactorMethod, userID=userID)
+    return redirect("/" + str(userID))
 
 @app.route("/<userID>/account/select/email")
 def select_email_account(userID: str):
@@ -113,8 +115,11 @@ def calc(userID: str):
     accounts = db.get_accounts(userID)
     con = db.get_connections(userID)
     model = SSodel()
+    recommendationEngine = SampleRecommendationEngine()
     results = model.calc(accounts)
 
+    recommendationEngine = SampleRecommendationEngine()
+    recommendations = recommendationEngine.generate_recommendations(accounts, results)
     
     G = nx.Graph()
     nodes = []
@@ -132,4 +137,4 @@ def calc(userID: str):
     plt.savefig("static/" + userID + ".png")
     plt.clf()
 
-    return render_template("modelTable.html", results=results)
+    return render_template("modelTable.html", results=results, recommendations=recommendations)

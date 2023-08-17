@@ -13,8 +13,8 @@
             <td>{{ result.secScore }}</td>
             <td>
                 <ul>
-                    {% for hint in result.hints %}
-                    <li>{{ hint }}</li>
+                    {% for recommendation in recommendations[loop.index0].recommendations %}
+                    <li>{{ recommendation.text }}</li>
                     {% endfor %}
                 </ul>
             </td>
