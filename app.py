@@ -124,7 +124,9 @@ def calc(userID: str):
     G = nx.Graph()
     nodes = []
     edges = []
+    labels = {}
     for result in results:
+        labels[result.account.id] = result.account.name
         nodes.append((result.account.id, {"color": "red"}))
         if result.account.connectedEmail != 0:
             edges.append((result.account.id, result.account.connectedEmail))
@@ -133,7 +135,7 @@ def calc(userID: str):
     G.add_nodes_from(nodes)
     G.add_edges_from(edges)
 
-    nx.draw(G, with_labels=True, )
+    nx.draw(G, with_labels=True, labels=labels)
     plt.savefig("static/" + userID + ".png")
     plt.clf()
 

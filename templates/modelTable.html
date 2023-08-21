@@ -2,7 +2,8 @@
     <thead>
         <tr>
             <th>Account</th>
-            <th>Value</th>
+            <th>Real Secure Score</th>
+            <th>Account Secure Score</th>
             <th>Hints/Warnings</th>
         </tr>
     </thead>
@@ -10,6 +11,7 @@
         {% for result in results %}
         <tr>
             <td>{{ result.account.name }}</td>
+            <td>{{ result.actualSecScore }}</td>
             <td>{{ result.secScore }}</td>
             <td>
                 <ul>
