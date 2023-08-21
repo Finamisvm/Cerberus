@@ -1,14 +1,21 @@
-from mathstuffs.modelInterface import ModelInterface, ModelResult
+from entity.twoFactorMethod import TwoFactorMethod
+from mathstuffs.modelInterface import SecurityEngine, SecurityScoreResult
 from entity.account import Account
 from entity.loginMethod import LoginMethod
 
 
-class SSodel(ModelInterface):
-    def calc(self, accounts: list[Account]) -> list[ModelResult]:
+class SSodel(SecurityEngine):
+    accountDict = {}
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.accountDict = {}
+
+    def calc(self, accounts: list[Account]) -> list[SecurityScoreResult]:
         results = []
         for acc in accounts:
-            secScore = self.calc_sec_score_for_account(acc)
-            result = ModelResult(acc, secScore)
+            secScore = self.calc_sec_score_for_account(acc, accounts)
+            result = SecurityScoreResult(acc, secScore)
 
             self.calc_connected_accounts(result, accounts, acc.connectedLoginAccounts)
             self.calc_connected_accounts(result, accounts, acc.connectedRecoveryAccounts)
@@ -16,10 +23,10 @@ class SSodel(ModelInterface):
             results.append(result)
         return results
 
-    def calc_connected_accounts(self, result: ModelResult, accounts: list[Account], connectedAccounts: list[int]):
+    def calc_connected_accounts(self, result: SecurityScoreResult, accounts: list[Account], connectedAccounts: list[int]):
         for loginAccountId in connectedAccounts:
                 loginAccount = self.get_account(accounts, loginAccountId)
-                secScoreLoginAcc = self.calc_sec_score_for_account(loginAccount)
+                secScoreLoginAcc = self.calc_sec_score_for_account(loginAccount, accounts)
                 result.secScoreConnectedAccounts.append([loginAccountId, secScoreLoginAcc])
                 if secScoreLoginAcc < result.actualSecScore:
                     result.actualSecScore = secScoreLoginAcc
@@ -31,21 +38,40 @@ class SSodel(ModelInterface):
                 return acc
 
 
-    def calc_sec_score_for_account(self, account: Account) -> float:
+    def calc_sec_score_for_account(self, account: Account, accounts: list[Account]) -> float:
+        if self.accountDict.get(account.id) != None:
+            return self.accountDict.get(account.id)
+        
         loginMethod = account.loginMethod
+        secScore = 0.0
         if loginMethod == LoginMethod.PASSWORD:
-            return 1.0
+            secScore = 3.0
         elif loginMethod == LoginMethod.SMS:
-            return 2.0
+            secScore = 4.0
         elif loginMethod == LoginMethod.CERTIFICATE:
-            return 6.0
+            secScore = 8.0
         elif loginMethod == LoginMethod.BIOMETRICS:
-            return 4.0
-        elif loginMethod == LoginMethod.EMAIL:
-            return 4.0
-        elif loginMethod == LoginMethod.MAGIC_LINK:
-            return 3.0
-        elif loginMethod == LoginMethod.SSO:
-            return 5.0
+            secScore = 7.0
         elif loginMethod == LoginMethod.TOKEN:
-            return 3.0
+            secScore = 7.0
+        elif loginMethod == LoginMethod.MAGIC_LINK or loginMethod == LoginMethod.SSO or loginMethod == LoginMethod.EMAIL:
+            for acc in account.connectedLoginAccounts:
+                connectedAccScore = self.calc_sec_score_for_account(self.get_account(accounts, acc), accounts)
+                if secScore == 0.0:
+                    secScore = connectedAccScore
+                elif connectedAccScore < secScore:
+                    secScore = connectedAccScore
+
+        if account.twoFAMethod != TwoFactorMethod.NONE:
+            secScore = secScore + 2
+
+        min = secScore
+        for acc in account.connectedRecoveryAccounts:
+            connectedAccScore = self.calc_sec_score_for_account(self.get_account(accounts, acc), accounts)
+            if connectedAccScore < min:
+                min = connectedAccScore
+
+        secScore = secScore - ((secScore - min) / 2)
+
+        self.accountDict[account.id] = secScore
+        return secScore

@@ -1,7 +1,7 @@
 from enum import Enum
 from entity.account import Account
 from entity.loginMethod import LoginMethod
-from mathstuffs.modelInterface import ModelResult
+from mathstuffs.modelInterface import SecurityScoreResult
 
 class RecommendationSeverity(Enum):
     HINT = 1
@@ -28,12 +28,12 @@ class RecommendationResult:
         self.recommendations = recommendations
 
 class RecommendationEngine:
-    def generate_recommendations(self, modelResults: list[ModelResult]) -> dict:
+    def generate_recommendations(self, modelResults: list[SecurityScoreResult]) -> dict:
         pass
 
 
 class SampleRecommendationEngine(RecommendationEngine):
-    def generate_recommendations(self, accounts: list[Account], modelResults: list[ModelResult]) -> dict:
+    def generate_recommendations(self, accounts: list[Account], modelResults: list[SecurityScoreResult]) -> dict:
         recommendationResults = []
         for result in modelResults:
             recommendationResult = RecommendationResult(
@@ -46,12 +46,12 @@ class SampleRecommendationEngine(RecommendationEngine):
 
         return recommendationResults    
 
-    def check_for_sec_level(self, result: ModelResult, accounts: list[Account]):
+    def check_for_sec_level(self, result: SecurityScoreResult, accounts: list[Account]):
         recommendations = []
         if result.secScore < 3:
             recommendations.append(Recommendation(
                 type=RecommendationSeverity.CRITICAL,
-                text="The used login method is unsecure",
+                text="The used login method is insecure",
                 solution="Change to a more secure login method, e.g. certificate, biometrics, hardware token, magic link",
             ))
         elif result.secScore < 7:
@@ -78,7 +78,7 @@ class SampleRecommendationEngine(RecommendationEngine):
 
         return recommendations  
 
-    def check_for_recovery(self, result: ModelResult, accounts: list[Account]):
+    def check_for_recovery(self, result: SecurityScoreResult, accounts: list[Account]):
         acc = result.account
         recommendations = []
         if len(acc.fallbackMethod) == 0:

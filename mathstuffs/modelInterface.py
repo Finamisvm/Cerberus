@@ -1,6 +1,6 @@
 from entity.account import Account
 
-class ModelResult:
+class SecurityScoreResult:
     account: Account = None
     secScore: float = 0.0
     actualSecScore: float = 0.0
@@ -13,6 +13,6 @@ class ModelResult:
         self.secScoreConnectedAccounts = []
         self.hints = []
 
-class ModelInterface:
-    def calc(accounts: list[Account]) -> list[ModelResult]:
+class SecurityEngine:
+    def calc(accounts: list[Account]) -> list[SecurityScoreResult]:
         pass

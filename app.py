@@ -92,7 +92,7 @@ def select_recovery_account(userID: str):
     accounts = db.get_accounts(userID)
 
     recoveryMethod =  RecoveryMethod(int(request.values.get("recoveryMethod")))
-    if recoveryMethod == RecoveryMethod.EMAIL or recoveryMethod == RecoveryMethod.OTHER_ACCOUNT:
+    if recoveryMethod == RecoveryMethod.EMAIL or recoveryMethod == RecoveryMethod.SECURITY_QUESTIONS:
         return render_template("account/multiSelect.html", accounts=accounts, prefix=PREFIX_RECOVERY_SELECTION)
     return ""
 
